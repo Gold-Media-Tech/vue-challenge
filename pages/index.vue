@@ -22,8 +22,10 @@
     </div>
     <div class="flex justify-center mt-8">
       <ul class="list-disc">
-        <li v-for="book in books.docs" :key="book.title">{{ book.title }}</li>
+        <li v-for="book in books.docs" :key="book.key">{{ book.title }}</li>
       </ul>
+
+      <p v-if="loading">Loading</p>
     </div>
   </div>
 </template>
@@ -33,7 +35,8 @@ export default {
   data() {
     return {
       search: "",
-      books: [],
+      books: {},
+      loading: false,
     };
   },
   computed: {
@@ -45,12 +48,16 @@ export default {
     getBooks(e) {
       e.preventDefault();
       let self = this;
+      this.loading = true;
 
       this.$axios
         .get(
           "http://openlibrary.org/search.json?q=" + this.search + "&limit=20"
         )
-        .then((res) => (self.books = res.data));
+        .then((res) => {
+          self.books = res.data;
+          self.loading = false;
+        });
     },
   },
 };
