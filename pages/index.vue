@@ -1,7 +1,55 @@
 <template>
-  <Tutorial/>
+  <div class="container mx-auto">
+    <div class="flex justify-center mt-4">
+      <h1 class="text-3xl">Search Faber Vergara</h1>
+    </div>
+    <div class="flex justify-center mt-12">
+      <form @submit="getBooks">
+        <input
+          type="text"
+          class="border border-gray-700 focus:border-blue-400 rounded h-10 w-64"
+          placeholder="Search"
+          v-model="search"
+        />
+        <button
+          class="bg-blue-600 text-white h-10 w-32 rounded disabled:bg-gray-600"
+          :disabled="isButtonDisabled"
+          type="submit"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+    <div class="flex justify-center mt-8">
+      <ul class="list-disc">
+        <li v-for="book in books.docs" :key="book.title">{{ book.title }}</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      search: "",
+      books: [],
+    };
+  },
+  computed: {
+    isButtonDisabled() {
+      return this.search === "";
+    },
+  },
+  methods: {
+    getBooks(e) {
+      e.preventDefault();
+      let self = this;
+
+      this.$axios
+        .get("http://openlibrary.org/search.json?q=" + this.search)
+        .then((res) => (self.books = res.data));
+    },
+  },
+};
 </script>
