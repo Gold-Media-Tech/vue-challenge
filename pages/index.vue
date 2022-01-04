@@ -1,14 +1,14 @@
 <template>
   <div class="container mx-auto">
     <div class="flex justify-center mt-4">
-      <h1 class="text-3xl">Search Faber Vergara</h1>
+      <h1 class="text-3xl">Search by Faber Vergara</h1>
     </div>
     <div class="flex justify-center mt-12">
       <form @submit="getBooks">
         <input
           type="text"
           class="border border-gray-700 focus:border-blue-400 rounded h-10 w-64"
-          placeholder="Search"
+          placeholder="Type a book name"
           v-model="search"
         />
         <button
@@ -16,7 +16,7 @@
           :disabled="isButtonDisabled"
           type="submit"
         >
-          Send
+          Search
         </button>
       </form>
     </div>
@@ -47,7 +47,9 @@ export default {
       let self = this;
 
       this.$axios
-        .get("http://openlibrary.org/search.json?q=" + this.search)
+        .get(
+          "http://openlibrary.org/search.json?q=" + this.search + "&limit=20"
+        )
         .then((res) => (self.books = res.data));
     },
   },
