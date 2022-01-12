@@ -19,12 +19,11 @@
       </button>
     </div>
     <div class="flex justify-center mt-8">
-      <ul class="list-disc">
-        <li v-for="book in books.docs" :key="book.key">{{ book.title }}</li>
-      </ul>
-
       <p v-if="$fetchState.pending">Loading</p>
       <p v-else-if="$fetchState.error">An error occurred :(</p>
+      <ul v-else class="list-disc">
+        <li v-for="book in books.docs" :key="book.key">{{ book.title }}</li>
+      </ul>
     </div>
   </div>
 </template>
