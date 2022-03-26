@@ -1,7 +1,18 @@
 <template>
-  <Tutorial/>
+  <section>
+    <Search/>
+    <shared-list-books-view/>
+
+  </section>
 </template>
 
 <script>
-export default {}
+import {mapGetters} from 'vuex'
+
+export default {
+  mounted() {
+    this.$store.dispatch('prueba')
+  },
+  computed: mapGetters('books', ["getBooks"])
+}
 </script>
