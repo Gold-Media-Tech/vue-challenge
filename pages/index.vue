@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Search
+    <core-search
       class="mb-12"
       ref="refsearch"
       v-model="search"

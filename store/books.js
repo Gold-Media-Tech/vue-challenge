@@ -50,13 +50,15 @@ export const actions = {
   },
 
   async searchInCache({ commit, state }, key) {
+    console.info('For cache search')
 
     const bookInState = state.booksSearch.docs.filter( book => book.key.includes( key ))
-    commit('setBookInfoView', bookInState)
+    commit('setBookInfoView', bookInState[0])
 
   },
 
   async searchInApi ({ commit }, key) {
+    console.info('For API search')
 
     const url = `${WORKS}${key}.json`
     const res = await this.$api.$get(url)

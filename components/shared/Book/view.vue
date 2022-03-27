@@ -11,7 +11,8 @@
            alt="imagen"
         />
 
-        <p class="absolute text-lg transform translate-x-5 -translate-y-20 bg-pink-600 text-white py-3 px-3 rounded-full cursor-pointer hover:scale-105 duration-500">
+        <p
+          class="favorites">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
@@ -22,9 +23,11 @@
 </template>
 
 <script>
-import imageNotFound from "~/static/image-not-found.png"
+import generatedCovers from "~/mixins/generatedCovers";
+
 export default {
   name: "view-book",
+  mixins: [generatedCovers],
   props: {
     book: {
       type : [Array, Object],
@@ -33,16 +36,7 @@ export default {
   },
   computed: {
     cover () {
-      const { isbn = null ,oclc = null ,lccn = null, cover_i = null } = this.book
-
-      if (cover_i)
-        return `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`
-
-      const covers =  Object.entries({isbn,oclc,lccn})
-                            .filter(([_, v]) => v != null)[0]
-      console.log('--->>', covers)
-      return covers ? `https://covers.openlibrary.org/b/${covers[0]}/${covers[1][0]}-M.jpg`
-                    : imageNotFound
+      return this.generatedCover( this.book )
     }
   },
   methods: {
@@ -54,7 +48,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
