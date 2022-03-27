@@ -1,3 +1,6 @@
+import { SEARCH } from "~/constants/endpoints";
+
+
 export const state = () => ({
   booksSearch: []
 })
@@ -15,8 +18,12 @@ export const getters = {
 }
 
 export const actions = {
-  async prueba ({commit}) {
-    const res = await this.$api.$get('search.json?q=The+Lord+of+the+Rings')
+  async searchBooks ({commit}, {optionFilter, search} ) {
+
+    console.log(optionFilter, search)
+    const url = `${SEARCH}?${optionFilter}=${search}`
+
+    const res = await this.$api.$get(url)
     commit('setBooksSearch', res)
   },
 
