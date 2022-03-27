@@ -2,7 +2,10 @@
   <section>
     <div class="grid sm:grid-cols-6 gap-5 grid-cols-2">
       <div v-for="book in books" :key="book.key">
-        <shared-book-view :book="book"/>
+        <shared-book-view
+          :book="book"
+          @view="viewBook"
+        />
       </div>
 
     </div>
@@ -15,6 +18,12 @@ export default {
     books : {
       type:  [Array, Object],
       required: true
+    }
+  },
+  methods :{
+    viewBook ( key ) {
+      console.log('viewBook', key)
+      this.$router.push(`/book/${key}`)
     }
   }
 }

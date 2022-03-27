@@ -1,5 +1,8 @@
 <template>
-  <div class="flex items-center justify-center">
+  <div
+    class="flex items-center justify-center"
+    @click="viewBook"
+  >
     <div class="bg-white rounded-xl overflow-hidden shadow-2xl cursor-pointer hover:scale-110 hover:shadow-3xl transform duration-500">
       <div class="relative">
         <img
@@ -40,6 +43,13 @@ export default {
       console.log('--->>', covers)
       return covers ? `https://covers.openlibrary.org/b/${covers[0]}/${covers[1][0]}-M.jpg`
                     : imageNotFound
+    }
+  },
+  methods: {
+    viewBook () {
+      const key = this.book.key.split('/')[2]
+      console.log('key', key , this.book.key.split('/'))
+      this.$emit('view', key)
     }
   }
 }
