@@ -4,23 +4,27 @@
       class="mb-12"
       ref="refsearch"
       v-model="search"
-      @update="search = $event"
+      @update="searchIn"
     />
 
-    <shared-list-books-view
-      :books="docs"
-      v-if="hasBooks"
-    />
-    <shared-titles-view
-      v-else
-      title="Welcome to the Open Library"
-      sub-title="search for the book"
-    />
+    <div v-show="!isLoading">
+      <shared-list-books-view
+        :books="docs"
+        v-if="hasBooks"
+      />
+      <shared-titles-view
+        v-else
+        title="Welcome to the Open Library"
+        sub-title="search for the book"
+      />
+    </div>
+    <core-loading v-show="isLoading" />
+
   </section>
 </template>
 
 <script>
-import {mapGetters, mapActions, mapMutations} from 'vuex'
+import {mapGetters, mapActions, mapMutations, mapState} from 'vuex'
 
 export default {
   name: 'Index',
@@ -31,16 +35,10 @@ export default {
   mounted() {
     this.clearSearch()
   },
-  watch: {
-    search (newVal) {
-      this.optionFilter = this.$refs.refsearch.filter
-      console.log('newVal', newVal, this.optionFilter)
-      this.searchBooks({optionFilter: this.optionFilter, search: newVal})
-    }
-  },
+
   computed: {
     ...mapGetters('books', ["getBooks"]),
-
+    ...mapState(["isLoading"]),
     hasBooks() {
       return !!this.getBooks.docs?.length
     },
@@ -51,7 +49,11 @@ export default {
   },
   methods: {
     ...mapActions('books', ["searchBooks"]),
-    ...mapMutations('books', ["clearSearch"])
+    ...mapMutations('books', ["clearSearch"]),
+    searchIn ( newVal) {
+      this.optionFilter = this.$refs.refsearch.filter
+      this.searchBooks({optionFilter: this.optionFilter, search: newVal})
+    }
   }
 }
 </script>

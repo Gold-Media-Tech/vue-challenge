@@ -12,7 +12,6 @@ export default {
         const coversBook =  Object.entries({isbn,oclc,lccn, covers})
           .filter(([_, v]) => v != null)[0]
 
-      console.log('coverBook', coversBook)
 
       if(!!coversBook && coversBook[0].includes('covers')) coversBook[0] = 'id'
 

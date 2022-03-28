@@ -15,7 +15,10 @@
       :options="[ 'title', 'author','subject']"
     />
     <div class="md:flex space-x-6 py-3 px-4 rounded-lg">
-      <button class="bg-gray-800 py-2 px-8 text-white font-semibold rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer">
+      <button
+        class="bg-gray-800 py-2 px-8 text-white font-semibold rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer"
+        @click="emitAction"
+      >
         Search
       </button>
     </div>
@@ -33,6 +36,11 @@ export default {
     inputSearch (val) {
       if (val)
         this.$emit('update', val)
+    }
+  },
+  methods: {
+    emitAction () {
+      this.$emit('update', this.inputSearch)
     }
   }
 }

@@ -22,7 +22,6 @@ export default {
   },
   methods :{
     viewBook ( key ) {
-      console.log('viewBook', key)
       this.$router.push(`/book/${key}`)
     }
   }

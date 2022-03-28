@@ -11,19 +11,19 @@ export default function ({ $axios , store, redirect}, inject) {
 
   // api.setBaseURL(process.env.API_URL)
 
-  api.onRequest((config) => {
+  api.onRequest(() => {
     store.commit("setLoading")
-    console.log('Making request to api' + config)
   })
 
-  api.onResponse((info) => {
-    console.log('onResponse -> Axios', info)
-    // store.commit("setLoading")
+  api.onResponse(() => {
+    store.commit("setLoading")
   })
 
   api.onError( error => {
     const code = parseInt(error.response && error.response.status)
-    if (code === 400) {
+    console.log('code error axios', code, error)
+    if (code === 400 || code === 500) {
+      store.commit('setError', { point: 'searchInCache' , error })
       redirect('/')
     }
   })

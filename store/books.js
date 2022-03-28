@@ -44,23 +44,19 @@ export const getters = {
   },
   getFavorites ( state ) {
     return state.bookFavorites
-  },
-  /*getInfoFavorites ( state ) {
-
-    return state.bookFavorites.map(favorite => {
-      return state.booksCache.filter( book => book.key === favorite )
-    }).flat()
-
-  }*/
-
+  }
 }
 
 export const actions = {
   async searchBooks ({commit}, {optionFilter, search} ) {
 
-    const url = `${SEARCH}?${optionFilter}=${search}`
-    const res = await this.$api.$get(url)
-    commit('setBooksSearch', res)
+    try {
+      const url = `${SEARCH}?${optionFilter}=${search}`
+      const res = await this.$api.$get(url)
+      commit('setBooksSearch', res)
+    } catch (error) {
+      commit('setError', { point: 'searchInCache' , error }, { root: true })
+    }
 
   },
 
@@ -76,19 +72,26 @@ export const actions = {
   },
 
   async searchInCache({ commit, state }, key) {
-    console.info('For cache search')
 
-    const bookInState = state.booksSearch.docs.filter( book => book.key.includes( key ))
-    commit('setBookInfoView', bookInState[0])
+    try {
+      const bookInState = state.booksSearch.docs.filter( book => book.key.includes( key ))
+      commit('setBookInfoView', bookInState[0])
+    } catch (error) {
+      commit('setError', { point: 'searchInCache' , error }, { root: true })
+    }
+
 
   },
 
   async searchInApi ({ commit }, key) {
-    console.info('For API search')
 
-    const url = `${WORKS}${key}.json`
-    const res = await this.$api.$get(url)
-    commit('setBookInfoView', res)
+    try {
+      const url = `${WORKS}${key}.json`
+      const res = await this.$api.$get(url)
+      commit('setBookInfoView', res)
+    } catch (error) {
+      commit('setError', { point: 'searchInApi' , error }, { root: true })
+    }
 
   }
 
