@@ -14,7 +14,7 @@
       </div>
       <shared-add-favorities
         :is-favorite="verifyFavorite"
-        @add="setFavoriteBook(book.key)"
+        @add="setFavoriteBook(book)"
       />
     </div>
   </div>

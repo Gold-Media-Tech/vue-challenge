@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "view",
+  name: "Titles",
   props: {
     title: {
       type: String,

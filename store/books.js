@@ -1,4 +1,4 @@
-import { SEARCH, WORKS } from "~/constants/endpoints";
+import {SEARCH, WORKS} from "~/constants/endpoints";
 
 
 export const state = () => ({
@@ -10,9 +10,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setCache ( state, payload ){
-    state.booksCache.push(...payload)
-  },
   setBooksSearch( state, payload) {
     state.booksSearch = payload
   },
@@ -23,9 +20,9 @@ export const mutations = {
     state.infoBookView = payload
   },
   setFavoriteBook ( state, payload ) {
-    const exist = state.bookFavorites.some( book =>  book === payload )
+    const exist = state.bookFavorites.some( book =>  book.key === payload.key )
     if (exist)
-      state.bookFavorites = state.bookFavorites.filter( book => book !== payload )
+      state.bookFavorites = state.bookFavorites.filter( book => book.key !== payload.key )
     else
       state.bookFavorites.push( payload )
   },
@@ -47,7 +44,14 @@ export const getters = {
   },
   getFavorites ( state ) {
     return state.bookFavorites
-  }
+  },
+  /*getInfoFavorites ( state ) {
+
+    return state.bookFavorites.map(favorite => {
+      return state.booksCache.filter( book => book.key === favorite )
+    }).flat()
+
+  }*/
 
 }
 
@@ -57,7 +61,6 @@ export const actions = {
     const url = `${SEARCH}?${optionFilter}=${search}`
     const res = await this.$api.$get(url)
     commit('setBooksSearch', res)
-    commit('setCache', res.docs)
 
   },
 
@@ -65,7 +68,7 @@ export const actions = {
 
     const key = state.keyBookView
 
-    if (state.booksCache.length)
+    if (state.booksSearch.docs?.length)
       await dispatch("searchInCache", key)
     else
       await dispatch("searchInApi", key)
@@ -75,7 +78,7 @@ export const actions = {
   async searchInCache({ commit, state }, key) {
     console.info('For cache search')
 
-    const bookInState = state.booksCache.filter( book => book.key.includes( key ))
+    const bookInState = state.booksSearch.docs.filter( book => book.key.includes( key ))
     commit('setBookInfoView', bookInState[0])
 
   },
@@ -86,7 +89,6 @@ export const actions = {
     const url = `${WORKS}${key}.json`
     const res = await this.$api.$get(url)
     commit('setBookInfoView', res)
-    commit('setCache', res)
 
   }
 

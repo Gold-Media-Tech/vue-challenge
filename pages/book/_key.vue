@@ -29,7 +29,7 @@
               <li class="flex items-center py-3">
                 <shared-add-favorities
                   :is-favorite="verifyFavorite"
-                  @add="setFavoriteBook(getBookInfo.key)"
+                  @add="setFavoriteBook(getBookInfo)"
                 />
               </li>
             </ul>
@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     ...mapState("books", ["keyBookView", "infoBookView"]),
-    ...mapGetters('books',["getBookInfo", "getFavorites"]),
+    ...mapGetters('books',["getBookInfo"]),
     verifyFavorite () {
      return this.isFavorite( this.getBookInfo.key )
     }

@@ -5,9 +5,8 @@ export default {
 
   methods: {
     isFavorite ( key ) {
-      console.log('isFavorite', key)
       if (this.getFavorites.length)
-        return this.getFavorites.some( favority => favority === key )
+        return this.getFavorites.some( favority => favority.key === key )
 
       return false
     }

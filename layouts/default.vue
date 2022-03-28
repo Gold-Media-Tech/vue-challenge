@@ -21,7 +21,7 @@ export default {
       },
       {
         title : 'My Favorites',
-        route : '/'
+        route : '/favorites'
       }
     ]
   })

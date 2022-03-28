@@ -1,6 +1,13 @@
-export const state = () => ({})
+export const state = () => ({
+  isLoading: true
+})
 
-export const mutations = {}
+export const mutations = {
+  setLoading ( state ) {
+    state.isLoading = !state.loading
+  }
+
+}
 
 export const getters = {}
 

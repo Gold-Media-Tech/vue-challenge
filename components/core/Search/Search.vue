@@ -31,7 +31,8 @@ export default {
   }),
   watch: {
     inputSearch (val) {
-      this.$emit('update', val)
+      if (val)
+        this.$emit('update', val)
     }
   }
 }
