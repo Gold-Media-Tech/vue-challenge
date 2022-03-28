@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: 'Index',
@@ -28,6 +28,9 @@ export default {
     search : '',
     optionFilter: ''
   }),
+  mounted() {
+    this.clearSearch()
+  },
   watch: {
     search (newVal) {
       this.optionFilter = this.$refs.refsearch.filter
@@ -47,7 +50,8 @@ export default {
 
   },
   methods: {
-    ...mapActions('books', ["searchBooks"])
+    ...mapActions('books', ["searchBooks"]),
+    ...mapMutations('books', ["clearSearch"])
   }
 }
 </script>

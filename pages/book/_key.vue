@@ -27,12 +27,10 @@
                 </span>
               </li>
               <li class="flex items-center py-3">
-                <p
-                  class="favorites">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </p>
+                <shared-add-favorities
+                  :is-favorite="verifyFavorite"
+                  @add="setFavoriteBook(getBookInfo.key)"
+                />
               </li>
             </ul>
           </div>
@@ -72,10 +70,11 @@
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import generatedCovers from "~/mixins/generatedCovers";
+import verifyFavorities from "~/mixins/verifyFavorities";
 
 export default {
   name: "view-book",
-  mixins: [generatedCovers],
+  mixins: [generatedCovers, verifyFavorities],
   data: () => ({
     bookCover: ''
   }),
@@ -83,7 +82,7 @@ export default {
     this.setKeyBookSearch(this.$route.params.key)
   },
   methods: {
-    ...mapMutations('books', ["setKeyBookSearch"]),
+    ...mapMutations('books', ["setKeyBookSearch", "clearInfoBook", "setFavoriteBook"]),
     ...mapActions("books",["searchBookByKey"]),
     cover () {
       this.bookCover = this.generatedCover( this.getBookInfo )
@@ -91,7 +90,10 @@ export default {
   },
   computed: {
     ...mapState("books", ["keyBookView", "infoBookView"]),
-    ...mapGetters('books',["getBookInfo"]),
+    ...mapGetters('books',["getBookInfo", "getFavorites"]),
+    verifyFavorite () {
+     return this.isFavorite( this.getBookInfo.key )
+    }
 
 },
   watch: {
@@ -101,6 +103,9 @@ export default {
     infoBookView () {
       this.cover()
     }
+  },
+  beforeDestroy() {
+    this.clearInfoBook()
   }
 }
 </script>

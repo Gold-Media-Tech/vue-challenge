@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="grid sm:grid-cols-6 gap-5 grid-cols-2">
+    <div class="grid sm:grid-cols-6 gap-10 grid-cols-2">
       <div v-for="book in books" :key="book.key">
         <shared-book-view
           :book="book"
